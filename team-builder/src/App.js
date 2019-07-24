@@ -1,15 +1,17 @@
 import React from 'react';
+import { useState } from 'react';
 import './App.css';
 
-import { useState } from 'react';
+import Form from './components/Form';
+import Card from './components/Card';
 
 function App() {
-
-  const [teamList, setTeamList] = ('list');
-
-  const [name, setName] = useState('name');
-  const [email, setEmail] = useState('email');
-  const [role, setRole] = useState('role');
+  const [teamMember, setTeamMember] = useState({});
+  const [teamList, setTeamList] = useState([{name: 'Quinton', email: 'QEmail', role: 'Dev'}, {name: 'Connor', email: 'CEmail', role: 'Dev'}, {name: 'Bob', email: 'BEmail', role: 'Designer'}]);
+  console.log(teamList);
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [role, setRole] = useState('');
 
   const handleNameChange = event => {
     setName(event.target.value);
@@ -25,33 +27,37 @@ function App() {
 
   const handleSubmit = event => {
     event.preventDefault();
-    console.log(name);
-    console.log(email);
-    console.log(role);
+    setTeamMember({name, email, role});
+    setTeamList([...teamList, teamMember]);
+    setName('');
+    setEmail('');
+    setRole('');
+    console.log(teamList);
   }
 
   return (
-    <div className="App">
-      <form onSubmit={event => handleSubmit(event)}>
-        <label>
-          Username:
-          <input type='text' onChange={event => handleNameChange(event)} />
-          <br />
-        </label>
-        <label>
-          Email:
-          <input type='text' onChange={event => handleEmailChange(event)} />
-          <br />
-        </label>
-        <label>
-          Role:
-          <input type='text' onChange={event => handleRoleChange(event)} />
-          <br />
-        </label>
-        <button>Submit!</button>
-      </form>
+    <div>
+      <Form
+        teamMember={teamMember}
+        teamList={teamList}
+        name={name}
+        email={email}
+        role={role}
+        handleNameChange={handleNameChange}
+        handleEmailChange={handleEmailChange}
+        handleRoleChange={handleRoleChange}
+        handleSubmit={handleSubmit}
+      />
+      <div>
+        <Card
+          teamList={teamList}
+          name={name}
+          email={email}
+          role={role}
+        />
+      </div>
     </div>
-  );
+  )
 }
 
 export default App;
